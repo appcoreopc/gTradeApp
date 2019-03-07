@@ -1,0 +1,18 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mongodb-pod
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+       claimName: task-pv-claim
+  containers:
+    - name: task-pv-container
+      image: mongo
+      ports:
+        - containerPort: 27107
+          name: "mongodb"
+      volumeMounts:
+        - mountPath: "/data/db"
+          name: task-pv-storage
