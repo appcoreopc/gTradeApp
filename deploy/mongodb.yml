@@ -1,12 +1,12 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: mongodb-pod
+  name: mongodb
 spec:
   volumes:
-    - name: task-pv-storage
+    - name: mongo-pv-storage
       persistentVolumeClaim:
-       claimName: task-pv-claim
+       claimName: mongo-pv-claim
   containers:
     - name: task-pv-container
       image: mongo
@@ -15,4 +15,4 @@ spec:
           name: "mongodb"
       volumeMounts:
         - mountPath: "/data/db"
-          name: task-pv-storage
+          name: mongo-pv-storage

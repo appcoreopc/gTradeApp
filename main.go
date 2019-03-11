@@ -3,8 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"net/http"
 	"time"
 
+	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -12,8 +15,21 @@ import (
 
 func main() {
 
+	r := mux.NewRouter()
+	// Routes consist of a path and a handler function.
+	r.HandleFunc("/", YourHandler)
+
+	fmt.Println("Listening to port 9005")
+	// Bind to a port and pass our router in
+	log.Fatal(http.ListenAndServe(":9005", r))
+
+}
+
+func YourHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Gorilla with mongodb!\n"))
+
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	client, _ := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, _ := mongo.NewClient(options.Client().ApplyURI("mongodb://mongodb:27017"))
 
 	errConnect := client.Connect(ctx)
 	if errConnect != nil {
@@ -23,10 +39,9 @@ func main() {
 	collection := client.Database("testing").Collection("numbers")
 
 	if collection != nil {
-		fmt.Print("collection created")
+		fmt.Println("collection created")
 	}
 
-	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	res, err := collection.InsertOne(ctx, bson.M{"name": "pi", "value": 3.14159})
 
 	if err != nil {
