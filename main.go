@@ -26,10 +26,11 @@ func main() {
 }
 
 func YourHandler(w http.ResponseWriter, r *http.Request) {
+
 	w.Write([]byte("Gorilla with mongodb!\n"))
 
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	client, _ := mongo.NewClient(options.Client().ApplyURI("mongodb://mongodb:27017"))
+	client, _ := mongo.NewClient(options.Client().ApplyURI("mongodb://mongoserver:27017"))
 
 	errConnect := client.Connect(ctx)
 	if errConnect != nil {
