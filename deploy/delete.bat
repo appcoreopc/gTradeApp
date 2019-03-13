@@ -4,3 +4,4 @@ kubectl delete --all deployments,pv,pvc,svc,ing,pods,daemonsets,replicasets
 # 
 # apt-get update
 # apt-get install iputils-ping
+
