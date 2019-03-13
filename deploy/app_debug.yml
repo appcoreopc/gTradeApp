@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webappdbg
+spec:
+  selector:
+    matchLabels:
+      app: webappdbg
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webappdbg
+    spec:
+      containers:
+      - name: webappdbg
+        image: nginx
+        ports:
+        - containerPort: 8008
